@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { state, getCell } from '@/store';
 import { PIPContainer } from './pip-container';
 import { reactive } from 'vue';
+import { textures } from './images';
 
 const gridSize = 14;
 const floorColor = 0xFFFFFF;
@@ -34,6 +35,7 @@ export class Map {
   private changeCameraOnOpen = false;
 
   private selectedCellOutline: PIXI.Graphics = new PIXI.Graphics();
+  private selectedCellArrow: PIXI.Sprite = textures.assets.dungeon['arrow'].sprite;
 
   private isPainting = false;
   private paintingMode: 'open' | 'floor' = 'floor';
@@ -43,6 +45,9 @@ export class Map {
   constructor(private app: PIXI.Application, parent?: PIXI.Container) {
     this.container = new PIPContainer(app);
     (parent || app.stage).addChild(this.container);
+
+    this.selectedCellArrow.pivot.x = this.selectedCellArrow.width / 2;
+    this.selectedCellArrow.pivot.y = this.selectedCellArrow.height / 2;
 
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++) {
@@ -178,7 +183,9 @@ export class Map {
       });
 
       this.app.stage.removeChild(this.selectedCellOutline);
+      this.app.stage.removeChild(this.selectedCellArrow);
       this.app.stage.addChild(this.selectedCellOutline);
+      this.app.stage.addChild(this.selectedCellArrow);
     };
   }
 
@@ -192,6 +199,7 @@ export class Map {
     this.selectedCellOutline.pivot.y = this.selectedCellOutline.height / 2;
 
     this.app.stage.addChild(this.selectedCellOutline);
+    this.app.stage.addChild(this.selectedCellArrow);
   }
 
   public loadMap() {
@@ -379,15 +387,40 @@ export class Map {
 
     if (state.selectedCell.x === -1 && state.selectedCell.y === -1) {
       if (this.selectedCellOutline.visible) this.selectedCellOutline.visible = false;
+      if (this.selectedCellArrow.visible) this.selectedCellArrow.visible = false;
     } else {
       if (!this.selectedCellOutline.visible) this.selectedCellOutline.visible = true;
+      if (!this.selectedCellArrow.visible) this.selectedCellArrow.visible = true;
 
+      const cellSize = 32 * this.container.scale.x;
       this.selectedCellOutline.scale.x = this.container.scale.x;
       this.selectedCellOutline.scale.y = this.container.scale.y;
-      const cellSize = 32 * this.container.scale.x;
       this.selectedCellOutline.x = offsetX + (state.selectedCell.x * cellSize) + (this.selectedCellOutline.width / 2);
       this.selectedCellOutline.y = offsetY + (state.selectedCell.y * cellSize) + (this.selectedCellOutline.height / 2);
-      // this.selectedCellOutline.x += (this.selectedCellOutline.scale.x * 0)
+
+      this.selectedCellArrow.scale.x = this.container.scale.x;
+      this.selectedCellArrow.scale.y = this.container.scale.y;
+      this.selectedCellArrow.x = offsetX + (state.selectedCell.x * cellSize) + (this.selectedCellOutline.width / 2);
+      this.selectedCellArrow.y = offsetY + (state.selectedCell.y * cellSize) + (this.selectedCellOutline.height / 2);
+
+      switch (state.cameraDirection) {
+        case 'north':
+          this.selectedCellArrow.rotation = Math.PI * 1.5;
+          // this.selectedCellArrow.y -= this.selectedCellOutline.width / 2;
+          break;
+        case 'east':
+          this.selectedCellArrow.rotation = 0;
+          // this.selectedCellArrow.x += this.selectedCellOutline.width / 2;
+          break;
+        case 'south':
+          this.selectedCellArrow.rotation = Math.PI / 2;
+          // this.selectedCellArrow.y += this.selectedCellOutline.width / 2;
+          break;
+        case 'west':
+          this.selectedCellArrow.rotation = Math.PI;
+          // this.selectedCellArrow.x -= this.selectedCellOutline.width / 2;
+          break;
+      }
     }
   }
 }
