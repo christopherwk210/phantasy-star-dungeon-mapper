@@ -1,0 +1,22 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <div class="tab-help p-2">
+    <label class="mb-3"><em>Left click</em> to toggle cells between open spaces (white) and walls (grey).</label>
+    <label class="mb-3">Cells will turn red when they are invalid.</label>
+    <label class="mb-3"><em>Scroll wheel</em> to zoom in and out, <em>middle click</em> and drag to pan around.</label>
+    <label class="mb-3"><em>Right click</em> to manage the element on a cell.</label>
+    <label class="mb-3"><em>Ctrl + left click</em> to teleport the dungeon view camera to a cell.</label>
+    <label class="mb-3"><em>Tab</em> switches between grid view and dungeon view.</label>
+    <label class="mb-3"><em>Arrow keys</em> navigate around the dungeon.</label>
+  </div>
+</template>
+
+<style scoped>
+  em {
+    font-style: normal;
+    color: white;
+  }
+</style>

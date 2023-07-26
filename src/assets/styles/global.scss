@@ -1,0 +1,102 @@
+@import './vars.scss';
+@import "@/../node_modules/bootstrap/scss/bootstrap";
+
+*:not(input):not(textarea) {
+  user-select: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #1E1E1C;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Cascadia Mono', Courier, monospace;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+a.bg-secondary:focus, a.bg-secondary:hover, button.bg-secondary:focus, button.bg-secondary:hover {
+  background-color: #171619 !important;
+}
+
+a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
+  background-color: #040403!important;
+}
+
+.no-text {
+  cursor: default;
+  user-select: none;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.form-check, .form-check * {
+  user-select: none;
+  cursor: pointer !important;
+}
+
+.d-grid {
+  display: grid;
+}
+
+.tool-container, .tool-card-container {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+}
+
+.tool-card-container {
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+
+  .card {
+    width: 100%;
+    max-width: 960px;
+    margin: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card-body {
+    overflow: auto;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    padding: 0;
+  
+    .card {
+      height: 100%;
+    }
+  }
+}
+
+.list-group-item {
+  border: none;
+}
+
+
+.bar {
+  top: 56px !important;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    top: 0 !important;
+  }
+}
+
+nav {
+  z-index: 99999;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    z-index: 0 !important;
+  }
+}
