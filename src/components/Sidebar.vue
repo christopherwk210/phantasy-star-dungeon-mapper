@@ -22,7 +22,7 @@ const { state, currentTab } = useState();
         <TabDungeons v-if="state.selectedTab === 0" />
         <TabDungeonConfig v-if="state.selectedTab === 1" />
         <TabFloors v-if="state.selectedTab === 2" />
-        <TabHelp v-if="state.selectedTab === 5" />
+        <TabHelp v-if="state.selectedTab === 6" />
       </div>
     </div>
   </div>

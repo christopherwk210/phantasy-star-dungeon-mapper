@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { state, getCell } from '@/store';
 import { PIPContainer } from './pip-container';
-import { reactive } from 'vue';
 import { textures } from './images';
 
 const gridSize = 14;
@@ -145,8 +144,19 @@ export class Map {
     }
   }
 
-  private cellRightClicked(cell: GridCell, x: number, y: number) {
-    console.log(`Cell right clicked: ${x}, ${y}`)
+  private cellRightClicked(cell: GridCell, cellX: number, cellY: number) {
+    const screenX = cell.cells.wall.x;
+    const screenY = cell.cells.wall.y;
+
+    const { x, y } = cell.cells.wall.getGlobalPosition(new PIXI.Point(screenX, screenY));
+    const popperX = x + (this.app.view as HTMLCanvasElement).getBoundingClientRect().left;
+    const popperY = y + (this.app.view as HTMLCanvasElement).getBoundingClientRect().top;
+
+    state.contextCell.x = cellX;
+    state.contextCell.y = cellY;
+    state.contextCell.screenX = popperX;
+    state.contextCell.screenY = popperY;
+    state.contextCell.visible = true;
   }
 
   private createGrid() {
@@ -406,19 +416,15 @@ export class Map {
       switch (state.cameraDirection) {
         case 'north':
           this.selectedCellArrow.rotation = Math.PI * 1.5;
-          // this.selectedCellArrow.y -= this.selectedCellOutline.width / 2;
           break;
         case 'east':
           this.selectedCellArrow.rotation = 0;
-          // this.selectedCellArrow.x += this.selectedCellOutline.width / 2;
           break;
         case 'south':
           this.selectedCellArrow.rotation = Math.PI / 2;
-          // this.selectedCellArrow.y += this.selectedCellOutline.width / 2;
           break;
         case 'west':
           this.selectedCellArrow.rotation = Math.PI;
-          // this.selectedCellArrow.x -= this.selectedCellOutline.width / 2;
           break;
       }
     }

@@ -94,6 +94,11 @@ export const state = reactive({
       selectedIcon: 'bi-box-fill'
     },
     {
+      name: 'Enemies',
+      icon: 'bi-bug',
+      selectedIcon: 'bi-bug-fill'
+    },
+    {
       name: 'Illusory Walls',
       icon: 'bi-eye-slash',
       selectedIcon: 'bi-eye-slash-fill'
@@ -104,7 +109,14 @@ export const state = reactive({
       selectedIcon: 'bi-question-circle-fill'
     }
   ] as Link[],
-  selectedTab: 0
+  selectedTab: 0,
+  contextCell: {
+    x: 0,
+    y: 0,
+    screenX: 0,
+    screenY: 0,
+    visible: false
+  }
 });
 
 export function getCell(x: number, y: number) {
