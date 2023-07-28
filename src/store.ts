@@ -89,7 +89,7 @@ export const state = reactive({
       selectedIcon: 'bi-layers-fill'
     },
     {
-      name: 'Elements',
+      name: 'Inspector',
       icon: 'bi-box',
       selectedIcon: 'bi-box-fill'
     },

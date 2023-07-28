@@ -98,6 +98,7 @@ export class DungeonView {
 
     let cellNextX = state.selectedCell.x + (state.cameraDirection === 'east' ? (1 * dir) : (state.cameraDirection === 'west' ? (-1 * dir) : 0));
     let cellNextY = state.selectedCell.y + (state.cameraDirection === 'south' ? (1 * dir) : (state.cameraDirection === 'north' ? (-1 * dir) : 0));
+    if (cellNextX < 0 || cellNextX > 13 || cellNextY < 0 || cellNextY > 13) return;
     const cellNext = currentMap[cellNextY][cellNextX];
 
     if (cellIsWalkable(cellNext)) {

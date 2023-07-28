@@ -179,35 +179,36 @@ export namespace PhantasyStar {
     type: 'open' | 'wall' | 'door' | 'stairs' | 'chest' | 'trap' | 'enemy' | 'npc';
   }
 
-  interface MapCellOpen extends BaseMapCell {
+  export interface MapCellOpen extends BaseMapCell {
     type: 'open';
   }
-  interface MapCellWall extends BaseMapCell {
+  export interface MapCellWall extends BaseMapCell {
     type: 'wall';
   }
-  interface MapCellDoor extends BaseMapCell {
+  export interface MapCellDoor extends BaseMapCell {
     type: 'door';
     doorType: 'door' | 'dungeon door' | 'magic door';
     destination: string;
   }
-  interface MapCellStairs extends BaseMapCell {
+  export interface MapCellStairs extends BaseMapCell {
     type: 'stairs';
     stairsType: 'up' | 'down';
     destination: string;
   }
-  interface MapCellChest extends BaseMapCell {
+  export interface MapCellChest extends BaseMapCell {
     type: 'chest';
     trapType: 'spear' | 'bomb' | 'none';
+    reward: string;
   }
-  interface MapCellTrap extends BaseMapCell {
+  export interface MapCellTrap extends BaseMapCell {
     type: 'trap';
   }
-  interface MapCellEnemy extends BaseMapCell {
+  export interface MapCellEnemy extends BaseMapCell {
     type: 'enemy';
     enemyType: Enemy;
-    reward?: string;
+    reward: string;
   }
-  interface MapCellNpc extends BaseMapCell {
+  export interface MapCellNpc extends BaseMapCell {
     type: 'npc';
     npcType: 'room' | 'normal';
     name: string;
