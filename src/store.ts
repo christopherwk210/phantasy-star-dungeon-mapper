@@ -115,8 +115,10 @@ export const state = reactive({
     y: 0,
     screenX: 0,
     screenY: 0,
-    visible: false
-  }
+    visible: false,
+    selected: false
+  },
+  cellSize: 32
 });
 
 export function getCell(x: number, y: number) {

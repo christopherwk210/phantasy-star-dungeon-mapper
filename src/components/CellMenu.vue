@@ -100,7 +100,8 @@ onMounted(() => {
     virtualElement.getBoundingClientRect = generateGetBoundingClientRect(
       state.contextCell.screenX,
       state.contextCell.screenY,
-      32, 32
+      state.cellSize,
+      state.cellSize
     );
 
     popper.update();

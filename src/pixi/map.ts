@@ -35,6 +35,7 @@ export class Map {
 
   private selectedCellOutline: PIXI.Graphics = new PIXI.Graphics();
   private selectedCellArrow: PIXI.Sprite = textures.assets.dungeon['arrow'].sprite;
+  private contextCell: PIXI.AnimatedSprite;
 
   private isPainting = false;
   private paintingMode: 'open' | 'floor' = 'floor';
@@ -94,6 +95,7 @@ export class Map {
         });
       }
     }
+    this.contextCell = this.createContextCellSprite();
 
     this.container.pivot.x = this.container.width / 2;
     this.container.pivot.y = this.container.height / 2;
@@ -115,6 +117,30 @@ export class Map {
 
     app.ticker.add(() => this.update());
     this.rerender();
+  }
+
+  private createContextCellSprite() {
+    const sprite = new PIXI.AnimatedSprite([
+      textures.assets['selection']['1'].texture,
+      textures.assets['selection']['2'].texture,
+      textures.assets['selection']['3'].texture,
+      textures.assets['selection']['4'].texture,
+      textures.assets['selection']['5'].texture,
+      textures.assets['selection']['6'].texture
+    ]);
+
+    sprite.x = 32;
+    sprite.y = 32;
+    sprite.gotoAndPlay(0);
+    sprite.animationSpeed = 0.3;
+    sprite.autoUpdate = true;
+    sprite.scale.x = 2;
+    sprite.scale.y = 2;
+    sprite.pivot.x = sprite.width / 2;
+    sprite.pivot.y = sprite.height / 2;
+    this.app.stage.addChild(sprite);
+
+    return sprite;
   }
 
   private cellHovered(cell: GridCell, x: number, y: number) {
@@ -157,6 +183,7 @@ export class Map {
     state.contextCell.screenX = popperX;
     state.contextCell.screenY = popperY;
     state.contextCell.visible = true;
+    state.contextCell.selected = true;
   }
 
   private createGrid() {
@@ -194,8 +221,10 @@ export class Map {
 
       this.app.stage.removeChild(this.selectedCellOutline);
       this.app.stage.removeChild(this.selectedCellArrow);
+      this.app.stage.removeChild(this.contextCell);
       this.app.stage.addChild(this.selectedCellOutline);
       this.app.stage.addChild(this.selectedCellArrow);
+      this.app.stage.addChild(this.contextCell);
     };
   }
 
@@ -395,6 +424,15 @@ export class Map {
       line.y = this.container.y;
     });
 
+    const cellSize = 32 * this.container.scale.x;
+    state.cellSize = cellSize;
+
+    this.contextCell.visible = state.contextCell.selected;
+    this.contextCell.scale.x = this.container.scale.x * 2;
+    this.contextCell.scale.y = this.container.scale.y * 2;
+    this.contextCell.x = offsetX + (state.contextCell.x * cellSize) + (this.contextCell.width);
+    this.contextCell.y = offsetY + (state.contextCell.y * cellSize) + (this.contextCell.height);
+
     if (state.selectedCell.x === -1 && state.selectedCell.y === -1) {
       if (this.selectedCellOutline.visible) this.selectedCellOutline.visible = false;
       if (this.selectedCellArrow.visible) this.selectedCellArrow.visible = false;
@@ -402,7 +440,6 @@ export class Map {
       if (!this.selectedCellOutline.visible) this.selectedCellOutline.visible = true;
       if (!this.selectedCellArrow.visible) this.selectedCellArrow.visible = true;
 
-      const cellSize = 32 * this.container.scale.x;
       this.selectedCellOutline.scale.x = this.container.scale.x;
       this.selectedCellOutline.scale.y = this.container.scale.y;
       this.selectedCellOutline.x = offsetX + (state.selectedCell.x * cellSize) + (this.selectedCellOutline.width / 2);
