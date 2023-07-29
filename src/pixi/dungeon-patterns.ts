@@ -274,7 +274,7 @@ function parsePosition(): CellPattern {
         return cell.stairsType === 'up' ? CellType.STAIRS_UP : CellType.STAIRS_DOWN;
       case 'door':
         switch (cell.doorType) {
-          case 'door': return CellType.DOOR;
+          case 'normal': return CellType.DOOR;
           case 'magic door': return CellType.MAGIC_DOOR;
           case 'dungeon door': return CellType.DUNGEON_DOOR;
         }

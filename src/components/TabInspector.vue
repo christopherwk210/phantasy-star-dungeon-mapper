@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PhantasyStar } from '@/map.interface';
+import { enemies } from '@/map.interface';
 import { useState } from '@/store';
 import { computed } from 'vue';
 
@@ -35,81 +36,6 @@ const doorTypes: PhantasyStar.MapCellDoor['doorType'][] = [
   'magic door',
   'normal'
 ];
-
-const enemies: PhantasyStar.Enemy[] = [
-  'Ammonite',
-  'Androcop',
-  'Antlion',
-  'Barbarian',
-  'Batalion',
-  'Big Club',
-  'Blue Slime',
-  'Centaur',
-  'Crawler',
-  'Dead Tree',
-  'Dezorian',
-  'E. Farmer',
-  'Elephant',
-  'Evildead',
-  'Executer',
-  'Fishman',
-  'Frostman',
-  'Ghoul',
-  'Giant',
-  'Giant Fly',
-  'Goldlens',
-  'Gold Scorpion',
-  'Golem',
-  'Green Dragon',
-  'Green Slime',
-  'Horseman',
-  'Leech',
-  'Lich',
-  'Magician',
-  'Mammoth',
-  'Maneater',
-  'Manticor',
-  'Marauder',
-  'Marman',
-  'N. Farmer',
-  'Nessie',
-  'Octopus',
-  'Owl Bear',
-  'Reaper',
-  'Red Dragon',
-  'Red Slime',
-  'Robotcop',
-  'Sandworm',
-  'Scorpion',
-  'Scorpius',
-  'Serpent',
-  'Shellfish',
-  'Skeleton',
-  'Skull-en',
-  'Sorcerer',
-  'Sphinx',
-  'Stalker',
-  'Sworm',
-  'Tarantul',
-  'Tentacle',
-  'Titan',
-  'Vampire',
-  'Werebat',
-  'White Dragon',
-  'Wight',
-  'Wing Eye',
-  'Wyvern',
-  'Zombie',
-  'Blue Dragon',
-  'Darkfalz',
-  'Dr. Mad',
-  'Gold Dragon',
-  'Lassic',
-  'Medusa',
-  'Saccubus',
-  'Shadow',
-  'Tajima'
-].sort() as PhantasyStar.Enemy[];
 
 const npcTypes: PhantasyStar.MapCellNpc['npcType'][] = ['normal', 'room'];
 const stairsTypes: PhantasyStar.MapCellStairs['stairsType'][] = ['down', 'up'];
