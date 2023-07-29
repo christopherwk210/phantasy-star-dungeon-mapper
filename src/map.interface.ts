@@ -187,7 +187,7 @@ export namespace PhantasyStar {
   }
   export interface MapCellDoor extends BaseMapCell {
     type: 'door';
-    doorType: 'door' | 'dungeon door' | 'magic door';
+    doorType: 'normal' | 'dungeon door' | 'magic door';
     destination: string;
   }
   export interface MapCellStairs extends BaseMapCell {

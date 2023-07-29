@@ -81,6 +81,15 @@ export class Map {
                     state.selectedCell.y = y;
                   }
                 }
+              } else if (e.shiftKey) {
+                state.contextCell.visible = false;
+                if (state.contextCell.x === x && state.contextCell.y === y && state.contextCell.selected) {
+                  state.contextCell.selected = false;
+                } else {
+                  state.contextCell.selected = true;
+                  state.contextCell.x = x;
+                  state.contextCell.y = y;
+                }
               } else {
                 this.cellClicked(gridCell, x, y);
               }
@@ -171,6 +180,16 @@ export class Map {
   }
 
   private cellRightClicked(cell: GridCell, cellX: number, cellY: number) {
+    if (cellX === state.contextCell.x && cellY === state.contextCell.y && state.contextCell.selected) {
+      if (state.contextCell.visible) {
+        state.contextCell.visible = false;
+        state.contextCell.selected = false;
+      } else {
+        state.contextCell.visible = true;
+      }
+      return;
+    }
+    
     const screenX = cell.cells.wall.x;
     const screenY = cell.cells.wall.y;
 
@@ -184,6 +203,7 @@ export class Map {
     state.contextCell.screenY = popperY;
     state.contextCell.visible = true;
     state.contextCell.selected = true;
+    state.selectedTab = 3;
   }
 
   private createGrid() {

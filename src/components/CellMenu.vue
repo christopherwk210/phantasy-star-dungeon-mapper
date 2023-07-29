@@ -56,7 +56,7 @@ const items: Item[] = [
     action: cell => {
       cell.type = 'door';
       (cell as PhantasyStar.MapCellDoor).destination = '';
-      (cell as PhantasyStar.MapCellDoor).doorType = 'door';
+      (cell as PhantasyStar.MapCellDoor).doorType = 'normal';
     }
   },
   {
@@ -69,6 +69,15 @@ const items: Item[] = [
       cell.type = 'enemy';
       (cell as PhantasyStar.MapCellEnemy).enemyType = '' as any;
       (cell as PhantasyStar.MapCellEnemy).reward = '';
+    }
+  },
+  {
+    name: 'Mark as NPC',
+    action: cell => {
+      cell.type = 'npc';
+      (cell as PhantasyStar.MapCellNpc).name = '';
+      (cell as PhantasyStar.MapCellNpc).notes = '';
+      (cell as PhantasyStar.MapCellNpc).npcType = 'normal';
     }
   }
 ];
@@ -117,13 +126,20 @@ function canShowItem(item: Item) {
   if (item.name === 'Clear' && (contextCell.value.type === 'open' || contextCell.value.type === 'wall')) return false;
   return true;
 }
+
+function executeMenuAction(item: Item) {
+  if (!contextCell.value) return;
+  item.action(contextCell.value);
+  state.contextCell.visible = false;
+  state.selectedTab = 3;
+}
 </script>
 
 <template>
   <div ref="cellMenu" class="bg-secondary text-white" :style="{ display: state.contextCell.visible ? 'block' : 'none' }" id="cellMenu">
     <div class="text-white-50 px-2 py-1 bg-dark">Cell ({{ state.contextCell.x }}, {{ state.contextCell.y }})</div>
     <template v-for="item of items">
-      <div v-if="canShowItem(item)" class="px-2 py-1 cursor-pointer menu-item" >
+      <div v-if="canShowItem(item)" @pointerdown="executeMenuAction(item)" class="px-2 py-1 cursor-pointer menu-item" >
         {{ item.name }}
       </div>
     </template>

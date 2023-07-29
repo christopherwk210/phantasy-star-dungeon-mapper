@@ -3,6 +3,7 @@ import { useState } from '@/store';
 import TabDungeonConfig from './TabDungeonConfig.vue';
 import TabDungeons from './TabDungeons.vue';
 import TabFloors from './TabFloors.vue';
+import TabInspector from './TabInspector.vue';
 import TabHelp from './TabHelp.vue';
 
 const { state, currentTab } = useState();
@@ -22,6 +23,7 @@ const { state, currentTab } = useState();
         <TabDungeons v-if="state.selectedTab === 0" />
         <TabDungeonConfig v-if="state.selectedTab === 1" />
         <TabFloors v-if="state.selectedTab === 2" />
+        <TabInspector v-if="state.selectedTab === 3" />
         <TabHelp v-if="state.selectedTab === 6" />
       </div>
     </div>
