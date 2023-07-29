@@ -92,6 +92,7 @@ watch([
 watch([
   () => state.dungeons[state.currentDungeon].floors[state.currentFloor].map
 ], () => {
+  loadMap();
   triggerDungeonViewUpdate();
 }, { deep: true });
 
