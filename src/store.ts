@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { createBlankMap } from './map-utils';
 import { Palette } from './map.interface';
 import type { PhantasyStar } from './map.interface';
@@ -133,11 +133,13 @@ export function useState() {
   const currentDungeon = computed<PhantasyStar.Dungeon>(() => state.dungeons[state.currentDungeon]);
   const currentTab = computed<Link>(() => state.links[state.selectedTab]);
   const currentFloor = computed<PhantasyStar.MapFloor>(() => currentDungeon.value.floors[state.currentFloor]);
-  const selectedCell = computed<PhantasyStar.MapCell>(() => {
-    if (state.contextCell.selected) {
-      return getCell(state.contextCell.x, state.contextCell.y)!;
+
+  const selectedCell = ref<PhantasyStar.MapCell>({ type: 'wall' });
+  watch([() => state.selectedCell.x, () => state.selectedCell.y], () => {
+    if (state.selectedCell.x < 0 || state.selectedCell.y < 0) {
+      selectedCell.value = { type: 'wall' };
     } else {
-      return getCell(0, 0)!;
+      selectedCell.value = getCell(state.selectedCell.x, state.selectedCell.y)!;
     }
   });
 

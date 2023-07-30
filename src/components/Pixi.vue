@@ -80,6 +80,18 @@ onMounted(async () => {
   }
 });
 
+function loadMap() {
+  if (pixiMethods.value.loadMap) pixiMethods.value.loadMap();
+}
+
+function updatePalette() {
+  if (pixiMethods.value.updatePalette) pixiMethods.value.updatePalette();
+}
+
+function triggerDungeonViewUpdate() {
+  if (pixiMethods.value.triggerDungeonViewUpdate) pixiMethods.value.triggerDungeonViewUpdate();
+}
+
 watch([
   () => state.currentDungeon,
   () => state.currentFloor,
@@ -98,6 +110,7 @@ watch([
   () => (selectedCell.value as PhantasyStar.MapCellNpc).npcType,
   () => (selectedCell.value as PhantasyStar.MapCellStairs).stairsType
 ], () => {
+  console.log('test')
   loadMap();
   triggerDungeonViewUpdate();
 }, { deep: true });
@@ -109,30 +122,19 @@ watch([
   triggerDungeonViewUpdate();
 }, { deep: true });
 
-function loadMap() {
-  if (pixiMethods.value.loadMap) pixiMethods.value.loadMap();
-}
-
 watch([
   () => state.dungeons[state.currentDungeon].palettes
 ], () => {
   updatePalette();
 }, { deep: true });
 
-function updatePalette() {
-  if (pixiMethods.value.updatePalette) pixiMethods.value.updatePalette();
-}
-
 watch([
   () => state.cameraDirection,
-  () => state.selectedCell
+  () => state.selectedCell.x,
+  () => state.selectedCell.y
 ], () => {
   triggerDungeonViewUpdate();
-}, { deep: true });
-
-function triggerDungeonViewUpdate() {
-  if (pixiMethods.value.triggerDungeonViewUpdate) pixiMethods.value.triggerDungeonViewUpdate();
-}
+});
 </script>
 
 <template>
