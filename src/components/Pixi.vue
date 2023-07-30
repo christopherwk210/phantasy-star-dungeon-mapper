@@ -80,6 +80,38 @@ onMounted(async () => {
   }
 });
 
+window.addEventListener('keydown', e => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    if (e.shiftKey) {
+      if (e.key === 'ArrowUp') {
+        moveAllMapCellsUp();
+      } else if (e.key === 'ArrowDown') {
+        moveAllMapCellsDown();
+      }
+    }
+
+    if ((e.target as HTMLElement).tagName === 'SELECT') {
+      e.preventDefault();
+    }
+  }
+});
+
+function moveAllMapCellsUp() {
+  const map = currentFloor.value.map;
+  const firstRow = map.splice(0, 1)[0];
+  map.push(firstRow);
+  loadMap();
+  triggerDungeonViewUpdate();
+}
+
+function moveAllMapCellsDown() {
+  const map = currentFloor.value.map;
+  const lastRow = map.splice(map.length - 1, 1)[0];
+  map.unshift(lastRow);
+  loadMap();
+  triggerDungeonViewUpdate();
+}
+
 function loadMap() {
   if (pixiMethods.value.loadMap) pixiMethods.value.loadMap();
 }
@@ -110,10 +142,9 @@ watch([
   () => (selectedCell.value as PhantasyStar.MapCellNpc).npcType,
   () => (selectedCell.value as PhantasyStar.MapCellStairs).stairsType
 ], () => {
-  console.log('test')
   loadMap();
   triggerDungeonViewUpdate();
-}, { deep: true });
+});
 
 watch([
   () => state.forceDungeonUpdate

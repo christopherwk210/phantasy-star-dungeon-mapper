@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { state } from '@/store';
+import { useState } from '@/store';
 import localforage from 'localforage';
 import NavBar from './components/NavBar.vue';
 import { onMounted } from 'vue';
+
+const { state } = useState();
 
 onMounted(async () => {
   try {
@@ -27,14 +29,6 @@ onMounted(async () => {
   setInterval(() => {
     localforage.setItem('psdm_state', JSON.stringify(state));
   }, 1000);
-});
-
-window.addEventListener('keydown', e => {
-  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-    if ((e.target as HTMLElement).tagName === 'SELECT') {
-      e.preventDefault();
-    }
-  }
 });
 </script>
 

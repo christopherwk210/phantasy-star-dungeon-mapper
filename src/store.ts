@@ -135,11 +135,11 @@ export function useState() {
   const currentFloor = computed<PhantasyStar.MapFloor>(() => currentDungeon.value.floors[state.currentFloor]);
 
   const selectedCell = ref<PhantasyStar.MapCell>({ type: 'wall' });
-  watch([() => state.selectedCell.x, () => state.selectedCell.y], () => {
-    if (state.selectedCell.x < 0 || state.selectedCell.y < 0) {
+  watch([() => state.contextCell.x, () => state.contextCell.y], () => {
+    if (state.contextCell.x < 0 || state.contextCell.y < 0) {
       selectedCell.value = { type: 'wall' };
     } else {
-      selectedCell.value = getCell(state.selectedCell.x, state.selectedCell.y)!;
+      selectedCell.value = getCell(state.contextCell.x, state.contextCell.y)!;
     }
   });
 
