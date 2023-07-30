@@ -4,7 +4,7 @@
       <RouterLink class="navbar-brand" to="/">Phantasy Star Dungeon Mapper</RouterLink>
       <div>
         <!-- <a href="https://twitter.com/tophtacular" target="_blank" class="link-light p-3">@tophtacular</a> -->
-        <!-- <a href="https://github.com/christopherwk210/tophers-tools" target="_blank" class="link-light p-3">GitHub</a> -->
+        <a href="https://github.com/christopherwk210/phantasy-star-dungeon-mapper" target="_blank" class="link-light p-3">GitHub</a>
       </div>
     </div>
   </nav>
