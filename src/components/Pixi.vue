@@ -80,16 +80,6 @@ onMounted(async () => {
   }
 });
 
-const cellTypes = computed<string[]>(() => {
-  const types: string[] = [];
-  currentFloor.value.map.forEach(row => {
-    row.forEach(cell => {
-      types.push(cell.type);
-    });
-  });
-  return types;
-});
-
 watch([
   () => state.currentDungeon,
   () => state.currentFloor,
