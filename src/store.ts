@@ -98,11 +98,11 @@ export const state = reactive({
       icon: 'bi-bug',
       selectedIcon: 'bi-bug-fill'
     },
-    {
-      name: 'Music',
-      icon: 'bi-music-note',
-      selectedIcon: 'bi-music-note-list'
-    },
+    // {
+    //   name: 'Music',
+    //   icon: 'bi-music-note',
+    //   selectedIcon: 'bi-music-note-list'
+    // },
     {
       name: 'Help',
       icon: 'bi-question-circle',
@@ -118,7 +118,8 @@ export const state = reactive({
     visible: false,
     selected: false
   },
-  cellSize: 32
+  cellSize: 32,
+  forceDungeonUpdate: false
 });
 
 export function getCell(x: number, y: number) {

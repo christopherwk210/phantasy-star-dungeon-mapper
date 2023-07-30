@@ -26,7 +26,7 @@ const { state, currentTab } = useState();
         <TabFloors v-if="state.selectedTab === 2" />
         <TabInspector v-if="state.selectedTab === 3" />
         <TabEnemies v-if="state.selectedTab === 4" />
-        <TabHelp v-if="state.selectedTab === 6" />
+        <TabHelp v-if="state.selectedTab === 5" />
       </div>
     </div>
   </div>

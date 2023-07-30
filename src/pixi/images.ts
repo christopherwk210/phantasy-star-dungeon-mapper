@@ -14,6 +14,7 @@ export const textures = reactive({
     'dead-end-door': Record<string, imageRecord>,
     'dungeon': Record<string, imageRecord>,
     'selection': Record<string, imageRecord>,
+    'map-elements': Record<string, imageRecord>,
     'side-exit': Record<string, imageRecord>,
     'straight-step': Record<string, imageRecord>,
     't-side-exit': Record<string, imageRecord>,

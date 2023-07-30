@@ -17,6 +17,19 @@ interface GridCell {
     floor: PIXI.Graphics;
     invalid: PIXI.Graphics;
   };
+  elements: {
+    chest: PIXI.Sprite;
+    door: PIXI.Sprite;
+    'dungeon-door': PIXI.Sprite;
+    enemy: PIXI.Sprite;
+    'illusory-wall': PIXI.Sprite;
+    'magic-door': PIXI.Sprite;
+    npc: PIXI.Sprite;
+    'stairs-down': PIXI.Sprite;
+    'stairs-up': PIXI.Sprite;
+    'trap-landing': PIXI.Sprite;
+    trap: PIXI.Sprite;
+  };
   x: number;
   y: number;
   open: boolean;
@@ -51,13 +64,14 @@ export class Map {
 
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++) {
-        const { wallCell, floorCell, invalidCell } = this.createCell();
+        const { wallCell, floorCell, invalidCell, elements } = this.createCell();
         const gridCell: GridCell = {
           cells: {
             wall: wallCell,
             floor: floorCell,
             invalid: invalidCell
           },
+          elements,
           x,
           y,
           open: false,
@@ -102,6 +116,12 @@ export class Map {
           if (index > 0) cell.visible = false;
           this.container.addChild(cell);
         });
+
+        for (const key in elements) {
+          elements[key].x = (x * 32) + 16;
+          elements[key].y = (y * 32) + 16;
+          this.container.addChild(elements[key]);
+        }
       }
     }
     this.contextCell = this.createContextCellSprite();
@@ -273,6 +293,37 @@ export class Map {
         this.setCellOpen(cell, false);
       } else {
         this.setCellOpen(cell, true);
+
+        switch (mapCell.type) {
+          case 'chest':
+            cell.elements.chest.visible = true;
+            break;
+          case 'door':
+            switch (mapCell.doorType) {
+              case 'normal': cell.elements.door.visible = true; break;
+              case 'dungeon door': cell.elements['dungeon-door'].visible = true; break;
+              case 'magic door': cell.elements['magic-door'].visible = true; break;
+            }
+            break;
+          case 'enemy':
+            cell.elements.enemy.visible = true;
+            break;
+          case 'illusory wall':
+            cell.elements['illusory-wall'].visible = true;
+            break;
+          case 'npc':
+            cell.elements.npc.visible = true;
+            break;
+          case 'trap':
+            cell.elements.trap.visible = true;
+            break;
+          case 'stairs':
+            switch (mapCell.stairsType) {
+              case 'up': cell.elements['stairs-up'].visible = true; break;
+              case 'down': cell.elements['stairs-down'].visible = true; break;
+            }
+            break;
+        }
       }
     });
   }
@@ -282,6 +333,10 @@ export class Map {
     cell.cells.floor.visible = open;
     cell.cells.wall.visible = !open;
     cell.cells.invalid.visible = !open;
+
+    for (const key in cell.elements) {
+      (cell.elements as any)[key].visible = false;
+    }
 
     const currentDungeon = state.dungeons[state.currentDungeon];
     const currentFloor = currentDungeon.floors[state.currentFloor];
@@ -294,6 +349,7 @@ export class Map {
     }
 
     this.scanForValidCells();
+    state.forceDungeonUpdate = true;
   }
 
   private setCellInvalid(cell: GridCell, invalid: boolean) {
@@ -309,7 +365,6 @@ export class Map {
     } else {
       cell.cells.floor.visible = !invalid;
     }
-
   }
 
   private scanForValidCells() {
@@ -395,7 +450,18 @@ export class Map {
     invalidCell.drawRect(0, 0, 32, 32);
     invalidCell.endFill();
 
-    return { wallCell, floorCell, invalidCell };
+    const elements: any = {};
+
+    for (const key in textures.assets['map-elements']) {
+      const element = new PIXI.Sprite(textures.assets['map-elements'][key].texture);
+      element.pivot.x = element.width / 2;
+      element.pivot.y = element.height / 2;
+      element.visible = false;
+      element.eventMode = 'none';
+      elements[key] = element;
+    }
+
+    return { wallCell, floorCell, invalidCell, elements };
   }
 
   private getMapCell(x: number, y: number) {

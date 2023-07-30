@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import { useState } from '@/store';
 import { init } from '@/pixi';
 import type { PhantasyStar } from '@/map.interface';
 
 const container = ref<HTMLElement>();
-const { state, selectedCell } =  useState();
+const { state, selectedCell, currentFloor } =  useState();
 
 const pixiMethods = ref({
   resetZoom: () => {},
@@ -80,6 +80,16 @@ onMounted(async () => {
   }
 });
 
+const cellTypes = computed<string[]>(() => {
+  const types: string[] = [];
+  currentFloor.value.map.forEach(row => {
+    row.forEach(cell => {
+      types.push(cell.type);
+    });
+  });
+  return types;
+});
+
 watch([
   () => state.currentDungeon,
   () => state.currentFloor,
@@ -89,6 +99,7 @@ watch([
   state.selectedCell.y = -1;
   loadMap();
   updatePalette();
+  triggerDungeonViewUpdate();
 });
 
 watch([
@@ -98,6 +109,13 @@ watch([
   () => (selectedCell.value as PhantasyStar.MapCellStairs).stairsType
 ], () => {
   loadMap();
+  triggerDungeonViewUpdate();
+}, { deep: true });
+
+watch([
+  () => state.forceDungeonUpdate
+], () => {
+  state.forceDungeonUpdate = false;
   triggerDungeonViewUpdate();
 }, { deep: true });
 
