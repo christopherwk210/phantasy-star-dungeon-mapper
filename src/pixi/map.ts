@@ -3,8 +3,6 @@ import { state, getCell, getCellBatch, getCellBatchRow } from '@/store';
 import { PIPContainer } from './pip-container';
 import { textures } from './images';
 
-console.log(textures)
-
 const gridSize = 14;
 const floorColor = 0xFFFFFF;
 const wallColor = 0x404054;
