@@ -13,7 +13,7 @@ const pixiMethods = ref({
   zoomOut: () => {},
   setGridVisible: (visible: boolean) => {},
   gridVisible: (() => {}) as () => boolean,
-  loadMap: () => {},
+  loadMap: (skipValidation?: boolean) => {},
   switchView: () => {},
   updatePalette: () => {},
   triggerDungeonViewUpdate: () => {}
@@ -83,6 +83,8 @@ onMounted(async () => {
 window.addEventListener('keydown', e => {
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     if (e.shiftKey) {
+      state.contextCell.selected = false;
+      state.contextCell.visible = false;
       if (e.key === 'ArrowUp') {
         moveAllMapCellsUp();
       } else if (e.key === 'ArrowDown') {
@@ -100,7 +102,7 @@ function moveAllMapCellsUp() {
   const map = currentFloor.value.map;
   const firstRow = map.splice(0, 1)[0];
   map.push(firstRow);
-  loadMap();
+  loadMap(true);
   triggerDungeonViewUpdate();
 }
 
@@ -108,12 +110,12 @@ function moveAllMapCellsDown() {
   const map = currentFloor.value.map;
   const lastRow = map.splice(map.length - 1, 1)[0];
   map.unshift(lastRow);
-  loadMap();
+  loadMap(true);
   triggerDungeonViewUpdate();
 }
 
-function loadMap() {
-  if (pixiMethods.value.loadMap) pixiMethods.value.loadMap();
+function loadMap(skipValidation?: boolean) {
+  if (pixiMethods.value.loadMap) pixiMethods.value.loadMap(skipValidation);
 }
 
 function updatePalette() {
@@ -142,7 +144,7 @@ watch([
   () => (selectedCell.value as PhantasyStar.MapCellNpc).npcType,
   () => (selectedCell.value as PhantasyStar.MapCellStairs).stairsType
 ], () => {
-  loadMap();
+  loadMap(true);
   triggerDungeonViewUpdate();
 });
 

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { state, getCell } from '@/store';
+import { state, getCell, getCellBatch, getCellBatchRow } from '@/store';
 import { PIPContainer } from './pip-container';
 import { textures } from './images';
 
@@ -281,7 +281,7 @@ export class Map {
     this.app.stage.addChild(this.selectedCellArrow);
   }
 
-  public loadMap() {
+  public loadMap(skipValidation = false) {
     const currentDungeon = state.dungeons[state.currentDungeon];
     const currentFloor = currentDungeon.floors[state.currentFloor];
     const currentMap = currentFloor.map;
@@ -294,9 +294,9 @@ export class Map {
       const mapCell = currentMap[cell.y][cell.x];
 
       if (mapCell.type === 'wall') {
-        this.setCellOpen(cell, false);
+        this.setCellOpen(cell, false, skipValidation);
       } else {
-        this.setCellOpen(cell, true);
+        this.setCellOpen(cell, true, skipValidation);
 
         switch (mapCell.type) {
           case 'chest':
@@ -339,11 +339,11 @@ export class Map {
     });
   }
 
-  private setCellOpen(cell: GridCell, open: boolean) {
+  private setCellOpen(cell: GridCell, open: boolean, skipValidation = false) {
     cell.open = open;
     cell.cells.floor.visible = open;
     cell.cells.wall.visible = !open;
-    cell.cells.invalid.visible = !open;
+    if (!skipValidation) cell.cells.invalid.visible = !open;
 
     for (const key in cell.elements) {
       (cell.elements as any)[key].visible = false;
@@ -359,7 +359,7 @@ export class Map {
       currentFloor.map[cell.y][cell.x].type = 'wall';
     }
 
-    this.scanForValidCells();
+    if (!skipValidation) this.scanForValidCells();
     state.forceDungeonUpdate = true;
   }
 
@@ -390,14 +390,9 @@ export class Map {
       }
       this.setCellInvalid(cell, false);
 
-      const cell1 = getCell(x - 1, y + 1);
-      const cell2 = getCell(x, y + 1);
-      const cell3 = getCell(x + 1, y + 1);
-      const cell4 = getCell(x - 1, y);
-      const cell6 = getCell(x + 1, y);
-      const cell7 = getCell(x - 1, y - 1);
-      const cell8 = getCell(x, y - 1);
-      const cell9 = getCell(x + 1, y - 1);
+      const [cell1, cell2, cell3] = getCellBatchRow([x - 1, x, x + 1], y + 1);
+      const [cell4, cell6] = getCellBatchRow([x - 1, x + 1], y);
+      const [cell7, cell8, cell9] = getCellBatchRow([x - 1, x, x + 1], y - 1);
       
       if (
         cell1 && cell1.type !== 'wall' &&

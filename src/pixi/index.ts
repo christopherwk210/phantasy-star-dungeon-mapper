@@ -31,7 +31,7 @@ export async function init(parent: HTMLElement) {
     resetZoom: () => getActiveView().resizeToFitScreen(),
     gridVisible: () => map.isGridVisible,
     setGridVisible: (visible: boolean) => map.setGridVisible(visible),
-    loadMap: () => map.loadMap(),
+    loadMap: (skipValidation?: boolean) => map.loadMap(skipValidation),
     updatePalette: () => dungeonView.updatePallete(),
     triggerDungeonViewUpdate: () => dungeonView.triggerDungeonViewUpdate()
   }

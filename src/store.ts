@@ -122,6 +122,21 @@ export const state = reactive({
   forceDungeonUpdate: false
 });
 
+export function getCellBatch(coords: { x: number, y: number }[]) {
+  const map = state.dungeons[state.currentDungeon].floors[state.currentFloor].map;
+  return coords.map(({ x, y }) => {
+    const row = map[y];
+    return row ? row[x] : undefined;
+  });
+}
+
+export function getCellBatchRow(xcoords: number[], ycoord: number) {
+  const map = state.dungeons[state.currentDungeon].floors[state.currentFloor].map;
+  const row = map[ycoord];
+  if (!row) return [];
+  return xcoords.map(x => row[x]);
+}
+
 export function getCell(x: number, y: number) {
   const row = state.dungeons[state.currentDungeon].floors[state.currentFloor].map[y];
   if (row) {
