@@ -85,6 +85,9 @@ window.addEventListener('keydown', e => {
     if (e.shiftKey) {
       state.contextCell.selected = false;
       state.contextCell.visible = false;
+      state.selectedCell.x = -1;
+      state.selectedCell.y = -1;
+
       if (e.key === 'ArrowUp') {
         moveAllMapCellsUp();
       } else if (e.key === 'ArrowDown') {
