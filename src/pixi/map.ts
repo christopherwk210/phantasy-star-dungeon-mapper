@@ -287,8 +287,12 @@ export class Map {
     const currentMap = currentFloor.map;
     state.currentMapValid = true;
 
+    let hasFloorAbove = state.currentFloor > 0;
+    let hasFloorBelow = state.currentFloor < currentDungeon.floors.length - 1;
+
     this.cells.forEach(cell => {
       const mapCell = currentMap[cell.y][cell.x];
+
       if (mapCell.type === 'wall') {
         this.setCellOpen(cell, false);
       } else {
@@ -323,6 +327,13 @@ export class Map {
               case 'down': cell.elements['stairs-down'].visible = true; break;
             }
             break;
+        }
+      }
+
+      if (hasFloorAbove) {
+        const mapCellAbove = currentDungeon.floors[state.currentFloor - 1].map[cell.y][cell.x];
+        if (mapCellAbove.type === 'trap') {
+          cell.elements['trap-landing'].visible = true;
         }
       }
     });
