@@ -45,7 +45,7 @@ async function loadStaticAssets(modules: Record<string, string>): Promise<{ arra
     for (const path in modules) {
       // modules[path]().then(async () => {
         const imagePath = modules[path];
-        const fileName = imagePath.substring(imagePath.lastIndexOf('/') + 1);
+        const fileName = path.substring(path.lastIndexOf('/') + 1);
         const fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const key = path.split('/').slice(-2, -1)[0];
         if (!assets[key]) assets[key] = {};
