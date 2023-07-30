@@ -12,6 +12,7 @@
     <label class="mb-3"><em>Ctrl + left click</em> to teleport the dungeon view camera to a cell.</label>
     <label class="mb-3"><em>Tab</em> switches between grid view and dungeon view.</label>
     <label class="mb-3"><em>Arrow keys</em> navigate around the dungeon.</label>
+    <label class="mb-3"><em>Shift + arrow keys</em> shift all cells in the dungeon.</label>
     <hr>
     <label class="mb-2 text-center">
       Made by <a target="_blank" href="https://twitter.com/tophtacular">@tophtacular</a>

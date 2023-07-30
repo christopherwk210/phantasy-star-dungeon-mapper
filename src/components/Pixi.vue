@@ -89,6 +89,10 @@ window.addEventListener('keydown', e => {
         moveAllMapCellsUp();
       } else if (e.key === 'ArrowDown') {
         moveAllMapCellsDown();
+      } else if (e.key === 'ArrowLeft') {
+        moveAllMapCellsLeft();
+      } else if (e.key === 'ArrowRight') {
+        moveAllMapCellsRight();
       }
     }
 
@@ -110,6 +114,26 @@ function moveAllMapCellsDown() {
   const map = currentFloor.value.map;
   const lastRow = map.splice(map.length - 1, 1)[0];
   map.unshift(lastRow);
+  loadMap(true);
+  triggerDungeonViewUpdate();
+}
+
+function moveAllMapCellsLeft() {
+  const map = currentFloor.value.map;
+  for (let i = 0; i < map.length; i++) {
+    const firstCell = map[i].splice(0, 1)[0];
+    map[i].push(firstCell);
+  }
+  loadMap(true);
+  triggerDungeonViewUpdate();
+}
+
+function moveAllMapCellsRight() {
+  const map = currentFloor.value.map;
+  for (let i = 0; i < map.length; i++) {
+    const lastCell = map[i].splice(map[i].length - 1, 1)[0];
+    map[i].unshift(lastCell);
+  }
   loadMap(true);
   triggerDungeonViewUpdate();
 }
