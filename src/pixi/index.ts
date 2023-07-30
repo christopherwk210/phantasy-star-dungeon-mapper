@@ -1,10 +1,13 @@
 import * as PIXI from 'pixi.js';
-import { Map } from './map';
-import { DungeonView } from './dungeon-view';
+// import { Map } from './map';
+// import { DungeonView } from './dungeon-view';
 import { loadTextures } from './images';
 
 export async function init(parent: HTMLElement) {
   await loadTextures();
+
+  const { Map } = await import('./map');
+  const { DungeonView } = await import('./dungeon-view');
 
   const app = new PIXI.Application({
     resizeTo: parent,
