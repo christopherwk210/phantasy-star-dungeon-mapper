@@ -75,13 +75,13 @@ export const state = reactive({
   links: [
     {
       name: 'Dungeons',
-      icon: 'bi-tree',
-      selectedIcon: 'bi-tree-fill'
+      icon: 'bi-geo-alt',
+      selectedIcon: 'bi-geo-alt-fill'
     },
     {
       name: 'Dungeon Config',
-      icon: 'bi-brush',
-      selectedIcon: 'bi-brush-fill'
+      icon: 'bi-gear',
+      selectedIcon: 'bi-gear-fill'
     },
     {
       name: 'Floors',
@@ -99,9 +99,9 @@ export const state = reactive({
       selectedIcon: 'bi-bug-fill'
     },
     {
-      name: 'Illusory Walls',
-      icon: 'bi-eye-slash',
-      selectedIcon: 'bi-eye-slash-fill'
+      name: 'Music',
+      icon: 'bi-music-note',
+      selectedIcon: 'bi-music-note-list'
     },
     {
       name: 'Help',
@@ -132,6 +132,13 @@ export function useState() {
   const currentDungeon = computed<PhantasyStar.Dungeon>(() => state.dungeons[state.currentDungeon]);
   const currentTab = computed<Link>(() => state.links[state.selectedTab]);
   const currentFloor = computed<PhantasyStar.MapFloor>(() => currentDungeon.value.floors[state.currentFloor]);
+  const selectedCell = computed<PhantasyStar.MapCell>(() => {
+    if (state.contextCell.selected) {
+      return getCell(state.contextCell.x, state.contextCell.y)!;
+    } else {
+      return getCell(0, 0)!;
+    }
+  });
 
-  return { state, currentDungeon, currentTab, currentFloor, getCell }; 
+  return { state, currentDungeon, currentTab, currentFloor, selectedCell, getCell }; 
 }

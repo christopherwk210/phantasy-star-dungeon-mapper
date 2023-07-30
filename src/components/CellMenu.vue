@@ -64,6 +64,10 @@ const items: Item[] = [
     action: cell => cell.type = 'trap'
   },
   {
+    name: 'Mark as illusory wall',
+    action: cell => cell.type = 'illusory wall'
+  },
+  {
     name: 'Mark as enemy',
     action: cell => {
       cell.type = 'enemy';

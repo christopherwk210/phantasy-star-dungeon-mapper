@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { state } from '@/store';
+import { useState } from '@/store';
 import { init } from '@/pixi';
+import type { PhantasyStar } from '@/map.interface';
 
 const container = ref<HTMLElement>();
+const { state, selectedCell } =  useState();
 
 const pixiMethods = ref({
   resetZoom: () => {},
@@ -90,7 +92,10 @@ watch([
 });
 
 watch([
-  () => state.dungeons[state.currentDungeon].floors[state.currentFloor].map
+  () => selectedCell.value.type,
+  () => (selectedCell.value as PhantasyStar.MapCellDoor).doorType,
+  () => (selectedCell.value as PhantasyStar.MapCellNpc).npcType,
+  () => (selectedCell.value as PhantasyStar.MapCellStairs).stairsType
 ], () => {
   loadMap();
   triggerDungeonViewUpdate();

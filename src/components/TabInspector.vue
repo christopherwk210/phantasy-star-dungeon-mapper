@@ -22,7 +22,8 @@ const cellTypes: PhantasyStar.MapCell['type'][] = [
   'open',
   'stairs',
   'trap',
-  'wall'
+  'wall',
+  'illusory wall'
 ];
 
 const chestTrapTypes: PhantasyStar.MapCellChest['trapType'][] = [

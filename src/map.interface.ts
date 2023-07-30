@@ -176,7 +176,7 @@ export namespace PhantasyStar {
   }
 
   interface BaseMapCell {
-    type: 'open' | 'wall' | 'door' | 'stairs' | 'chest' | 'trap' | 'enemy' | 'npc';
+    type: 'open' | 'wall' | 'door' | 'stairs' | 'chest' | 'trap' | 'enemy' | 'npc' | 'illusory wall';
   }
 
   export interface MapCellOpen extends BaseMapCell {
@@ -184,6 +184,9 @@ export namespace PhantasyStar {
   }
   export interface MapCellWall extends BaseMapCell {
     type: 'wall';
+  }
+  export interface MapCellIllusoryWall extends BaseMapCell {
+    type: 'illusory wall';
   }
   export interface MapCellDoor extends BaseMapCell {
     type: 'door';
@@ -215,7 +218,7 @@ export namespace PhantasyStar {
     notes: string;
   }
 
-  export type MapCell = MapCellOpen | MapCellWall | MapCellDoor | MapCellStairs | MapCellChest | MapCellTrap | MapCellEnemy | MapCellNpc;
+  export type MapCell = MapCellOpen | MapCellWall | MapCellDoor | MapCellStairs | MapCellChest | MapCellTrap | MapCellEnemy | MapCellNpc | MapCellIllusoryWall;
 }
 
 export const enemies: PhantasyStar.Enemy[] = [

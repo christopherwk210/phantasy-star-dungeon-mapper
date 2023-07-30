@@ -46,6 +46,10 @@ export class PIPContainer extends PIXI.Container {
     });
 
     window.addEventListener('wheel', e => {
+      let element = e.target as HTMLElement;
+      if (element.tagName === 'OPTION') element = element.parentElement!;
+      if (element.scrollHeight !== element.clientHeight) return;
+
       if (this.pipMode === 'full' && this.canZoom) this.handleWheel(e);
     });
 
