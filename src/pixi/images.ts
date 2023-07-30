@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 import * as PIXI from 'pixi.js';
 
-const images = import.meta.glob('@/assets/images/dungeon/**/*.png');
+const images = import.meta.glob('@/assets/images/dungeon/**/*.png', { eager: true, as: 'url' });
 
 export type imageRecord = { url: string; texture: PIXI.Texture; sprite: PIXI.Sprite; };
 
@@ -30,8 +30,8 @@ export async function loadTextures() {
   textures.assets = assets as any;
 }
 
-async function loadStaticAssets(modules: Record<string, () => Promise<unknown>>): Promise<{ array: string[], assets: Record<string, Record<string, imageRecord>> }> {
-  return new Promise(resolve => {
+async function loadStaticAssets(modules: Record<string, string>): Promise<{ array: string[], assets: Record<string, Record<string, imageRecord>> }> {
+  return new Promise(async resolve => {
     const array: string[] = [];
     const assets: Record<string, Record<string, imageRecord>> = {};
 
@@ -43,8 +43,8 @@ async function loadStaticAssets(modules: Record<string, () => Promise<unknown>>)
     }
     
     for (const path in modules) {
-      modules[path]().then(async () => {
-        const imagePath = (new URL(path, import.meta.url)).href;
+      // modules[path]().then(async () => {
+        const imagePath = modules[path];
         const fileName = imagePath.substring(imagePath.lastIndexOf('/') + 1);
         const fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const key = path.split('/').slice(-2, -1)[0];
@@ -54,7 +54,7 @@ async function loadStaticAssets(modules: Record<string, () => Promise<unknown>>)
         assets[key][fileNameNoExtension] = { url: imagePath, texture, sprite };
         array.push(imagePath);
         loadComplete();
-      });
+      // });
     }
   });
 }
